@@ -1,17 +1,18 @@
 <?php
-
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 namespace MVCF;
+include_once 'Loader.php';
+
 class App {
     
     private static $_instance = null;
     
+    private function __construct() {
+        \MVCF\Loader::registerNamespace('MVCF', dirname(__FILE__).DIRECTORY_SEPARATOR);
+        \MVCF\Loader::registerAutoload();
+    }
+    
     public function run() {
-        echo 'runnnn!';
+        
     }
     
     /**
