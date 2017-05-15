@@ -17,7 +17,7 @@ class Loader {
     
     public static function loadClass($class) {
         foreach (self::$namespaces as $key => $val) {
-            if(strpos($class, $key ) === 0) {            
+            if(strpos($class, $key ) === 0) { 
                 $file = realpath(substr_replace(str_replace('\\', DIRECTORY_SEPARATOR, $class), $val, 0, 
                         strlen($key)) . '.php');
                 if($file && is_readable($file)) {

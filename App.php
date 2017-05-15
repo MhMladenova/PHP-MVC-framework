@@ -7,6 +7,7 @@ class App {
     private static $_instance = null;
     private $_config = null;
     private $_router = null;
+    private $_dbConnections = array();
     
     /**
      *
@@ -32,14 +33,37 @@ class App {
         return $this->_configFolder;
     }
     
-    function get_router() {
+    public function getRouter() {
         return $this->_router;
     }
 
-    function set_router($_router) {
+    public function setRouter($_router) {
         $this->_router = $_router;
     }
 
+    public function getDBConnection($connection = 'default') {
+        if(!$connection) {
+            //TODO
+            throw new \Exception('No connection identifier provided', 500);
+        }
+        if ($this->_dbConnections[$connection]) {
+            return $this->_dbConnections[$connection];
+        }
+        
+        $cnfData = $this->getConfig()->database;
+        if (!$cnfData[$connection]) {
+            //TODO
+            throw new \Exception('No valid connection identifier proviede', 500);
+        }
+        
+        $dbh = new \PDO($cnfData[$connection]['connection_uri'], 
+                $cnfData[$connection]['username'],
+                $cnfData[$connection]['password'],
+                $cnfData[$connection]['pdo_options']);
+        $this->_dbConnections[$connection] = $dbh;
+        
+        return $dbh;
+    }
         
     /**
      * 

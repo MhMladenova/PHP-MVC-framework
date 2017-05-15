@@ -13,11 +13,11 @@ class FrontController {
         
     }
     
-    function get_router() {
+    function getRouter() {
         return $this->_router;
     }
 
-    function set_router(\MVCF\Routers\IRouter $_router) {
+    function setRouter(\MVCF\Routers\IRouter $_router) {
         $this->_router = $_router;
     }
 
@@ -27,7 +27,7 @@ class FrontController {
             throw new \Exception ('No valide router found', 500);
         }
         
-        $_uri = $router->getURI();
+        $_uri = $this->_router->getURI();
         $routes = \MVCF\App::getInstance()
                 ->getConfig()
                 ->routes;
@@ -81,6 +81,7 @@ class FrontController {
             }   
         }
         
+        //TODO fix case when a controller or the method in the controller is missing
         $controller = $this->_namespace . '\\' . ucfirst($this->_controller);
         $newController = new $controller();
         $newController->{$this->_method}();
