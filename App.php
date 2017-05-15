@@ -6,6 +6,8 @@ class App {
     
     private static $_instance = null;
     private $_config = null;
+    private $_router = null;
+    
     /**
      *
      * @var type \MVCF\FrontController
@@ -30,6 +32,15 @@ class App {
         return $this->_configFolder;
     }
     
+    function get_router() {
+        return $this->_router;
+    }
+
+    function set_router($_router) {
+        $this->_router = $_router;
+    }
+
+        
     /**
      * 
      * @return \MVCF\Config
@@ -45,6 +56,17 @@ class App {
         }
         
         $this->_frontController = \MVCF\FrontController::getInstance();
+        if ($this->_router instanceof \MVCF\Routers\IRouter) {
+            $this->_frontController->setRouter($this->_router);
+        } else if($this->_router == 'JsonRPCRouter') {
+            //TODO fix after creating RPC router 
+            $this->_frontController->setRouter(new \MVCF\Routers\DefaultRouter());
+        } else if($this->_router == 'CLIRouter') {
+            //TODO fix after creating CLI router 
+            $this->_frontController->setRouter(new \MVCF\Routers\DefaultRouter());
+        } else {
+            $this->_frontController->setRouter(new \MVCF\Routers\DefaultRouter());
+        }
         $this->_frontController->dispatch();
     }
     

@@ -52,6 +52,17 @@ class Loader {
         }
     }
     
+    public static function registerNamespaces($arr) {
+        if(is_array($arr)) {
+            foreach($arr as $key => $val) {
+                self::registerNamespace($key, $val);
+            }
+        } else {
+            //TODO 
+            throw new \Exception('Invalid namespaces');
+        }
+    }
+    
     public static function getNamespace() {
         return self::$namespaces;
     }
